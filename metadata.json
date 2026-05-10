@@ -1,0 +1,6 @@
+{
+  "name": "Hồn Việt - Học Tiếng Dân Tộc",
+  "description": "Ứng dụng học ngôn ngữ và khám phá văn hóa dân tộc Tây Bắc Việt Nam tích hợp AI.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["AI Translator", "Gamified Learning", "Cultural Gallery"]
+}
