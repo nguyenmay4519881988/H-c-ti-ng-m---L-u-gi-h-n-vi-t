@@ -1,54 +1,73 @@
 import { Language, Level, Lesson, CultureDetail } from './types';
 
-const generateLessons = (levelIdx: number): Lesson[] => {
+const generateLessons = (levelIdx: number, languageId: string): Lesson[] => {
   const titles = [
     ['Chào hỏi', 'Gia đình', 'Số đếm', 'Màu sắc', 'Kiểm tra level 1'],
     ['Trường học', 'Cơ thể', 'Thời tiết', 'Thời gian', 'Kiểm tra level 2'],
     ['Đồ ăn', 'Quần áo', 'Nhà cửa', 'Bản làng', 'Kiểm tra level 3']
   ];
 
-  return titles[levelIdx].map((title, i) => ({
-    id: `lesson-${levelIdx}-${i}`,
-    title: `Bài ${i + 1}: ${title}`,
-    description: `Khám phá kiến thức về ${title} trong văn hóa bản địa.`,
-    unlocked: true, // Unlock all lessons for demo purposes
-    stars: Math.floor(Math.random() * 4),
-    vocabularies: [
-      {
-        id: 'v1',
-        vietnamese: 'Chào bạn',
-        ethnic: 'Pình lả',
-        phonetic: '/pinh-la/',
-        image: 'https://images.unsplash.com/photo-1543269664-76bc3997d9ea?auto=format&fit=crop&q=80&w=400'
-      },
-      {
-        id: 'v2',
-        vietnamese: 'Cảm ơn',
-        ethnic: 'Khộp chay',
-        phonetic: '/khop-chay/',
-        image: 'https://images.unsplash.com/photo-1516733968668-dbdce39c46ef?auto=format&fit=crop&q=80&w=400'
-      },
-      {
-        id: 'v3',
-        vietnamese: 'Bạn khỏe không?',
-        ethnic: 'Mái hặc',
-        phonetic: '/mai-hac/',
-        image: 'https://images.unsplash.com/photo-1508913922359-8386c1236811?auto=format&fit=crop&q=80&w=400'
-      }
+  const vocabData: Record<string, { v: string; e: string; p: string; i: string }[]> = {
+    'Chào hỏi': [
+      { v: 'Chào bạn', e: 'Pình lả', p: '/pinh-la/', i: 'https://images.unsplash.com/photo-1543269664-76bc3997d9ea' },
+      { v: 'Tạm biệt', e: 'Sái múa', p: '/sai-mua/', i: 'https://images.unsplash.com/photo-1516733968668-dbdce39c46ef' },
+      { v: 'Cảm ơn', e: 'Khộp chay', p: '/khop-chay/', i: 'https://images.unsplash.com/photo-1508913922359-8386c1236811' }
     ],
-    quiz: [
-      {
-        id: 'q1',
-        question: `Từ nào có nghĩa là "${titles[levelIdx][i]}"?`,
-        options: ['Pình lả', 'Khộp chay', 'Mái hặc', 'Sái múa'],
-        correct: 0,
-        type: 'text'
-      }
+    'Gia đình': [
+      { v: 'Bố', e: 'Im', p: '/im/', i: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d' },
+      { v: 'Mẹ', e: 'Êm', p: '/em/', i: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330' },
+      { v: 'Anh chị em', e: 'Phi nọng', p: '/phi-nong/', i: 'https://images.unsplash.com/photo-1514315384763-ba401779410f' }
+    ],
+    'Số đếm': [
+      { v: 'Số Một', e: 'Nừng', p: '/nung/', i: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470' },
+      { v: 'Số Hai', e: 'Xoong', p: '/soong/', i: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470' },
+      { v: 'Số Ba', e: 'Xám', p: '/sam/', i: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470' }
+    ],
+    'Màu sắc': [
+      { v: 'Màu Đỏ', e: 'Đeng', p: '/deng/', i: 'https://images.unsplash.com/photo-1512058454905-6b841e7ad132' },
+      { v: 'Màu Xanh', e: 'Kịu', p: '/kiu/', i: 'https://images.unsplash.com/photo-1512058454905-6b841e7ad132' },
+      { v: 'Màu Vàng', e: 'Hưa', p: '/hua/', i: 'https://images.unsplash.com/photo-1512058454905-6b841e7ad132' }
     ]
-  }));
+  };
+
+  const getVocab = (title: string) => {
+    if (vocabData[title]) return vocabData[title];
+    return [
+      { v: `Giao tiếp ${title}`, e: 'Hả nâm', p: '/ha-nam/', i: 'https://images.unsplash.com/photo-1508913922359-8386c1236811' },
+      { v: `Hành động ${title}`, e: 'Khả múa', p: '/kha-mua/', i: 'https://images.unsplash.com/photo-1516733968668-dbdce39c46ef' },
+      { v: `Phát âm ${title}`, e: 'Pình xoong', p: '/pinh-soong/', i: 'https://images.unsplash.com/photo-1543269664-76bc3997d9ea' }
+    ];
+  };
+
+  return titles[levelIdx].map((title, i) => {
+    const vocabs = getVocab(title);
+    return {
+      id: `lesson-${levelIdx}-${i}-${languageId}`,
+      title: `Bài ${i + 1}: ${title}`,
+      description: `Khám phá kiến thức về ${title} trong văn hóa bản địa.`,
+      unlocked: true,
+      stars: Math.floor(Math.random() * 4),
+      vocabularies: vocabs.map((v, idx) => ({
+        id: `v-${idx}-${i}-${languageId}`,
+        vietnamese: v.v,
+        ethnic: v.e,
+        phonetic: v.p,
+        image: `${v.i}?auto=format&fit=crop&q=80&w=400`
+      })),
+      quiz: [
+        {
+          id: `q1-${i}-${languageId}`,
+          question: `Trong tiếng ${languageId === 'thai' ? 'Thái' : 'Mông'}, từ nào có nghĩa là "${vocabs[0].v}"?`,
+          options: [vocabs[0].e, vocabs[1].e, vocabs[2].e, 'Sái múa'],
+          correct: 0,
+          type: 'text'
+        }
+      ]
+    };
+  });
 };
 
-const generateLevels = (): Level[] => {
+const generateLevels = (languageId: string): Level[] => {
   const levelNames = [
     { name: 'LEVEL 1 — Làm quen', desc: 'Những bước chân đầu tiên vào ngôn ngữ mẹ đẻ.' },
     { name: 'LEVEL 2 — Cuộc sống hằng ngày', desc: 'Giao tiếp cơ bản trong sinh hoạt thường nhật.' },
@@ -56,11 +75,11 @@ const generateLevels = (): Level[] => {
   ];
 
   return levelNames.map((lv, i) => ({
-    id: `level-${i}`,
+    id: `level-${i}-${languageId}`,
     name: lv.name,
     description: lv.desc,
     isLocked: false,
-    lessons: generateLessons(i)
+    lessons: generateLessons(i, languageId)
   }));
 };
 
@@ -72,7 +91,7 @@ export const LANGUAGES_DATA: Language[] = [
     icon: '👘',
     color: 'bg-emerald-50',
     progress: 15,
-    levels: generateLevels()
+    levels: generateLevels('thai')
   },
   {
     id: 'mong',
@@ -81,7 +100,7 @@ export const LANGUAGES_DATA: Language[] = [
     icon: '🏔️',
     color: 'bg-amber-50',
     progress: 5,
-    levels: generateLevels()
+    levels: generateLevels('mong')
   },
   {
     id: 'khomu',
@@ -90,7 +109,7 @@ export const LANGUAGES_DATA: Language[] = [
     icon: '🎋',
     color: 'bg-rose-50',
     progress: 0,
-    levels: generateLevels()
+    levels: generateLevels('khomu')
   }
 ];
 

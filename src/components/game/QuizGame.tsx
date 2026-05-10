@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Timer, Zap, Heart, Trophy, X, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Timer, Zap, Heart, Trophy, X, CheckCircle2, AlertCircle, Star } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 import { playSound } from '@/src/lib/sounds';
 import confetti from 'canvas-confetti';

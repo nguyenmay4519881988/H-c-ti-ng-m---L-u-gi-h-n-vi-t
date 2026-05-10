@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Trophy, RefreshCw, Send, CheckCircle2, XCircle, Info } from 'lucide-react';
+import { X, Trophy, RefreshCw, Send, CheckCircle2, XCircle, Info, Star } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 
 const QUESTIONS = [
